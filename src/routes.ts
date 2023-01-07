@@ -2,6 +2,7 @@ import { UserController } from "./controller/UserController";
 import { FamilleController } from "./controller/FamilleController";
 import { GenreController } from "./controller/GenreController";
 import { EspeceController } from "./controller/EspeceController";
+import { PlanteController } from "./controller/PlanteController";
 
 export const Routes = [
 	{
@@ -129,5 +130,11 @@ export const Routes = [
 		route: "/especes/:id",
 		controller: EspeceController,
 		action: "remove",
+	},
+	{
+		method: "get",
+		route: "/plantes",
+		controller: PlanteController,
+		action: "all",
 	},
 ];

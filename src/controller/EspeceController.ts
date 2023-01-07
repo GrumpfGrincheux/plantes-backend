@@ -79,7 +79,7 @@ export class EspeceController {
 
 		if (espece.length == 0) {
 			const message: string = "Aucune plante ne correspond à votre recherche.";
-			return message;
+			return { message: message };
 		}
 		console.log(espece);
 		console.log(espece.length);

@@ -12,6 +12,6 @@ export class Plante {
 	@Column()
 	taille: number;
 
-	@OneToOne(() => Espece, (espece) => espece.plante)
+	@OneToOne(() => Espece, (espece) => espece.plante, { cascade: true })
 	espece: Espece;
 }

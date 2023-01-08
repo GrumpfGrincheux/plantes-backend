@@ -97,6 +97,12 @@ export const Routes = [
 	},
 	{
 		method: "get",
+		route: "/especes/one/name/:name",
+		controller: EspeceController,
+		action: "oneByName",
+	},
+	{
+		method: "get",
 		route: "/especes/especes/:name",
 		controller: EspeceController,
 		action: "searchByName",
@@ -136,5 +142,23 @@ export const Routes = [
 		route: "/plantes",
 		controller: PlanteController,
 		action: "all",
+	},
+	{
+		method: "get",
+		route: "/plantes/name/:name",
+		controller: PlanteController,
+		action: "allByName",
+	},
+	{
+		method: "get",
+		route: "/plantes/id/:id",
+		controller: PlanteController,
+		action: "allById",
+	},
+	{
+		method: "post",
+		route: "/plantes",
+		controller: PlanteController,
+		action: "saveWithName",
 	},
 ];

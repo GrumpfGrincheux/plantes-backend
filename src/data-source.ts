@@ -3,6 +3,7 @@ import { DataSource } from "typeorm";
 import { Espece } from "./entity/Espece";
 import { Famille } from "./entity/Famille";
 import { Genre } from "./entity/Genre";
+import { Plante } from "./entity/Plante";
 import { User } from "./entity/User";
 
 export const AppDataSource = new DataSource({
@@ -14,7 +15,7 @@ export const AppDataSource = new DataSource({
 	database: "test",
 	synchronize: true,
 	logging: false,
-	entities: [User, Famille, Genre, Espece],
+	entities: [User, Famille, Genre, Espece, Plante],
 	migrations: [],
 	subscribers: [],
 });

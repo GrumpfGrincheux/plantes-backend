@@ -7,10 +7,6 @@ import * as cors from "cors";
 import { Request, Response } from "express";
 import { AppDataSource } from "./data-source";
 import { Routes } from "./routes";
-import { User } from "./entity/User";
-import { Famille } from "./entity/Famille";
-import { Espece } from "./entity/Espece";
-import { Genre } from "./entity/Genre";
 
 AppDataSource.initialize()
 	.then(async () => {

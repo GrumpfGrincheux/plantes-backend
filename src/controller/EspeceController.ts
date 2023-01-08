@@ -3,8 +3,10 @@ import { NextFunction, Request, Response } from "express";
 import { Espece } from "../entity/Espece";
 import { Genre } from "../entity/Genre";
 import { Famille } from "../entity/Famille";
+import { Plante } from "../entity/Plante";
 
 export class EspeceController {
+	private planteRepository = AppDataSource.getRepository(Plante);
 	private especeRepository = AppDataSource.getRepository(Espece);
 	private genreRepository = AppDataSource.getRepository(Genre);
 	private familleRepository = AppDataSource.getRepository(Famille);
@@ -18,6 +20,17 @@ export class EspeceController {
 		});
 	}
 
+	async oneByName(request: Request, response: Response, next: NextFunction) {
+		const name = request.params.name;
+
+		const espece = await AppDataSource.getRepository(Espece)
+			.createQueryBuilder("espece")
+			.leftJoinAndSelect("espece.plante", "plante")
+			.where("espece.name LIKE :name", { name: `%${name}%` })
+			.getOneOrFail();
+		return espece;
+	}
+
 	async searchByName(request: Request, response: Response, next: NextFunction) {
 		const name = request.params.name;
 
@@ -25,16 +38,26 @@ export class EspeceController {
 			.createQueryBuilder("espece")
 			.innerJoin("espece.genre", "genre")
 			.innerJoin("espece.famille", "famille")
-			.select(["espece.name", "genre.name", "famille.name"])
+			.innerJoin("espece.plante", "plante")
+			.select([
+				"plante.id",
+				"plante.name",
+				"plante.taille",
+				"espece.id",
+				"espece.name",
+				"genre.id",
+				"genre.name",
+				"famille.id",
+				"famille.name",
+			])
 			.where("espece.name LIKE :name", { name: `%${name}%` })
+			.orderBy("famille_name, genre_name, espece_name")
 			.getRawMany();
 
 		if (espece.length == 0) {
 			const message: string = "Aucune plante ne correspond à votre recherche.";
 			return message;
 		}
-		console.log(espece);
-		console.log(espece.length);
 		return espece;
 	}
 
@@ -49,8 +72,20 @@ export class EspeceController {
 			.createQueryBuilder("espece")
 			.innerJoin("espece.genre", "genre")
 			.innerJoin("espece.famille", "famille")
-			.select(["espece.name", "genre.name", "famille.name"])
+			.innerJoin("espece.plante", "plante")
+			.select([
+				"plante.id",
+				"plante.name",
+				"plante.taile",
+				"espece.id",
+				"espece.name",
+				"genre.id",
+				"genre.name",
+				"famille.id",
+				"famille.name",
+			])
 			.where("genre.name LIKE :name", { name: `%${name}%` })
+			.orderBy("famille_name, genre_name, espece_name")
 			.getRawMany();
 
 		if (espece.length == 0) {
@@ -73,8 +108,20 @@ export class EspeceController {
 			.createQueryBuilder("espece")
 			.innerJoin("espece.genre", "genre")
 			.innerJoin("espece.famille", "famille")
-			.select(["espece.name", "genre.name", "famille.name"])
+			.innerJoin("espece.plante", "plante")
+			.select([
+				"plante.id",
+				"plante.name",
+				"plante.taile",
+				"espece.id",
+				"espece.name",
+				"genre.id",
+				"genre.name",
+				"famille.id",
+				"famille.name",
+			])
 			.where("famille.name LIKE :name", { name: `%${name}%` })
+			.orderBy("famille_name, genre_name, espece_name")
 			.getRawMany();
 
 		if (espece.length == 0) {

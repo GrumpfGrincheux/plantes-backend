@@ -24,7 +24,10 @@ export class Espece {
 	@ManyToOne(() => Famille, (famille) => famille.name)
 	famille: Famille;
 
-	@OneToOne(() => Plante, (plante) => plante.espece)
+	@OneToOne(() => Plante, (plante) => plante.espece, {
+		onDelete: "SET NULL",
+		onUpdate: "CASCADE",
+	})
 	@JoinColumn()
 	plante: Plante;
 }

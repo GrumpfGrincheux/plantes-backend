@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import { Espece } from "../entity/Espece";
 import { Plante } from "../entity/Plante";
 
-export class EspeceController {
+export class PlanteController {
 	private especeRepository = AppDataSource.getRepository(Espece);
 
 	async all(request: Request, response: Response, next: NextFunction) {
@@ -15,7 +15,17 @@ export class EspeceController {
 		return plantes;
 	}
 
-	async searchByName(request: Request, response: Response, next: NextFunction) {
+	async oneByName(request: Request, response: Response, next: NextFunction) {
+		const name = request.params.name;
+
+		const plantes = await AppDataSource.getRepository(Plante)
+			.createQueryBuilder("plante")
+			.leftJoinAndSelect("plante.espece", "espece")
+			.where("plante.name LIKE :name", { name: `%${name}%` })
+			.getOneOrFail();
+	}
+
+	async allByName(request: Request, response: Response, next: NextFunction) {
 		const name = request.params.name;
 
 		const plantes = await AppDataSource.getRepository(Plante)
@@ -25,7 +35,7 @@ export class EspeceController {
 			.getMany();
 	}
 
-	async searchById(request: Request, response: Response, next: NextFunction) {
+	async allById(request: Request, response: Response, next: NextFunction) {
 		const id = request.params.id;
 
 		const plantes = await AppDataSource.getRepository(Plante)
@@ -36,7 +46,7 @@ export class EspeceController {
 	}
 
 	async saveWithName(request: Request, response: Response, next: NextFunction) {
-		const { name, taille, especeName } = request.body;
+		const { especeName, name, taille } = request.body;
 		const espece = await this.especeRepository.findOne({
 			where: { name: especeName },
 		});
@@ -48,11 +58,9 @@ export class EspeceController {
 		plante.name = name;
 		plante.taille = taille;
 		plante.espece = espece;
-		espece.plante = plante;
 
-		await AppDataSource.manager.save(espece);
 		await AppDataSource.manager.save(plante);
 
-		return `L'espèce ${name} a bien été ajoutée !`;
+		return `La plante '${name}' a bien été ajoutée !`;
 	}
 }

@@ -76,7 +76,7 @@ export class EspeceController {
 			.select([
 				"plante.id",
 				"plante.name",
-				"plante.taile",
+				"plante.taille",
 				"espece.id",
 				"espece.name",
 				"genre.id",
@@ -112,7 +112,7 @@ export class EspeceController {
 			.select([
 				"plante.id",
 				"plante.name",
-				"plante.taile",
+				"plante.taille",
 				"espece.id",
 				"espece.name",
 				"genre.id",
